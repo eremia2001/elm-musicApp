@@ -1,70 +1,14 @@
 
-port module Main exposing (..)
+port module Home exposing (..)
 import Browser
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
+import Url
+import Browser.Navigation as Nav
 
 
 
--- MODEL
 
-type alias Model =
-    { isLoggedIn : Bool
-    }
-
-
--- INIT
-
-init : () -> (Model,Cmd Msg)
-init _ =
-       ({isLoggedIn = False}, 
-        Cmd.none)
-    
-
--- Ports
-port authenticate : () -> Cmd msg
-
--- UPDATE
-
-type Msg
-    = Authenticate
-
-update : Msg -> Model -> (Model,Cmd Msg)
-update msg model =
-    case msg of
-        Authenticate ->
-           ( model, authenticate () )
-
-
--- VIEW
-
-view : Model -> Html Msg
-view model =
-    div []
-        [ button [ onClick Authenticate ] [ text "Login" ]
-        , if model.isLoggedIn then
-            text "Hallo! Du bist eingeloggt."
-          else
-            text "Bitte logge dich ein."
-        ]
-
-
--- MAIN
-
-main : Program () Model Msg
-main =
-    Browser.element
-        { init = init
-        , view = view
-        , update = update
-        , subscriptions = subscriptions
-        }
-
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
-
-{- 
 -- MODEL
 
 type alias Model =
@@ -135,14 +79,14 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "Spotify Klon"
     , body =
-        [ viewBody model
+        [ homeView model
         ]
     }
-viewBody : Model -> Html Msg
-viewBody model = div[][button[onClick Authenticate  ][text "Login"],
+homeView : Model -> Html Msg
+homeView model = div[][
                     case model.currentPage of
-                        HomePage -> Home.homeView
-                        LoginPage -> div[][text "asd"]
+                        HomePage -> div[][text "Hallo Welt"]
+                        LoginPage -> div[][text "asdasd"]
                     ]
        
 
@@ -151,7 +95,7 @@ viewBody model = div[][button[onClick Authenticate  ][text "Login"],
 
 main : Program () Model Msg
 main =
-    Browser.element
+    Browser.application
         { init = init
         , view = view
         , update = update
@@ -162,4 +106,3 @@ main =
 subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.none
--}
