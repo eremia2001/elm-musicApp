@@ -9,7 +9,8 @@ import Html.Events exposing (onClick)
 -- MODEL
 
 type alias Model =
-    { isLoggedIn : Bool
+    { isLoggedIn : Bool,
+    message : String
     }
 
 
@@ -17,23 +18,26 @@ type alias Model =
 
 init : () -> (Model,Cmd Msg)
 init _ =
-       ({isLoggedIn = False}, 
+       ({isLoggedIn = False, message = "init"}, 
         Cmd.none)
     
 
 -- Ports
 port authenticate : () -> Cmd msg
+port tokenRecieved : (String -> msg) -> Sub msg
+
 
 -- UPDATE
 
 type Msg
-    = Authenticate
+    = Authenticate | TokenRecived String
 
 update : Msg -> Model -> (Model,Cmd Msg)
 update msg model =
     case msg of
         Authenticate ->
            ( model, authenticate () )
+        TokenRecived name -> ({model | message=name },Cmd.none)
 
 
 -- VIEW
@@ -41,7 +45,7 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ button [ onClick Authenticate ] [ text "Login" ]
+        [ button [ onClick Authenticate ] [ text model.message ]
         , if model.isLoggedIn then
             text "Hallo! Du bist eingeloggt."
           else

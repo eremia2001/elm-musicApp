@@ -16,7 +16,8 @@ type alias Model =
         currentPage : Page,
         key : Nav.Key,
         url : Url.Url,
-        message : String
+        message : String,
+        userName : String
     }
 type Page
     = HomePage
@@ -27,22 +28,24 @@ type Page
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
     ( {
-        currentPage = LoginPage,
+        currentPage = HomePage,
         key = key,
         url = url,
-        message = "init"
+        message = "init",
+        userName = ""
     },Cmd.none )
 
 -- Ports für die Kommunikation mit JS
-port authenticate : () -> Cmd msg
-port tokenReceived : (String -> msg) -> Sub msg
+--port authenticate : () -> Cmd msg
+--port tokenReceived : (String -> msg) -> Sub msg
+port getUsername : (String -> msg) -> Sub msg
 
 
 -- UPDATE
 
 type Msg
-    = Authenticate | TokenReceived String  | UrlChanged Url.Url
-    | LinkClicked Browser.UrlRequest
+    =   UrlChanged Url.Url
+    | LinkClicked Browser.UrlRequest | GetUsername String
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -50,14 +53,8 @@ update msg model =
     case msg of
         -- Wenn man auf LogIn drückt , ruft das die authenticate Methode auf ? 
 
-        Authenticate ->
-            (model, authenticate() )
-        -- Hier verarbeiten wir unser Token
-        TokenReceived token ->
-            let
-                updatedModel = { model | message = token }
-            in
-            (updatedModel, Cmd.none)
+ 
+        GetUsername name -> ({model | userName = name }, Cmd.none)
         LinkClicked urlRequest ->
             case urlRequest of
                 Browser.Internal url ->
@@ -85,8 +82,8 @@ view model =
 homeView : Model -> Html Msg
 homeView model = div[][
                     case model.currentPage of
-                        HomePage -> div[][text "Hallo Welt"]
-                        LoginPage -> div[][text "asdasd"]
+                        HomePage -> div[][text ("Sei gegrüßt"++ model.userName)]
+                        LoginPage -> div[][text "asdaasdsadasdasdadhggfhsasd"]
                     ]
        
 

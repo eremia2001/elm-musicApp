@@ -5169,23 +5169,17 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$application = _Browser_application;
-var $author$project$Home$LoginPage = {$: 'LoginPage'};
+var $author$project$Home$HomePage = {$: 'HomePage'};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Home$init = F3(
 	function (flags, url, key) {
 		return _Utils_Tuple2(
-			{currentPage: $author$project$Home$LoginPage, key: key, message: 'init', url: url},
+			{currentPage: $author$project$Home$HomePage, key: key, message: 'init', url: url, userName: ''},
 			$elm$core$Platform$Cmd$none);
 	});
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $elm$json$Json$Encode$null = _Json_encodeNull;
-var $author$project$Home$authenticate = _Platform_outgoingPort(
-	'authenticate',
-	function ($) {
-		return $elm$json$Json$Encode$null;
-	});
 var $elm$browser$Browser$Navigation$load = _Browser_load;
 var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
 var $elm$url$Url$addPort = F2(
@@ -5235,16 +5229,13 @@ var $elm$url$Url$toString = function (url) {
 var $author$project$Home$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'Authenticate':
+			case 'GetUserName':
+				var name = msg.a;
 				return _Utils_Tuple2(
-					model,
-					$author$project$Home$authenticate(_Utils_Tuple0));
-			case 'TokenReceived':
-				var token = msg.a;
-				var updatedModel = _Utils_update(
-					model,
-					{message: token});
-				return _Utils_Tuple2(updatedModel, $elm$core$Platform$Cmd$none);
+					_Utils_update(
+						model,
+						{userName: name}),
+					$elm$core$Platform$Cmd$none);
 			case 'LinkClicked':
 				var urlRequest = msg.a;
 				if (urlRequest.$ === 'Internal') {
@@ -5302,7 +5293,7 @@ var $author$project$Home$homeView = function (model) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$elm$html$Html$text('Hallo Welt')
+								$elm$html$Html$text('Sei gegrüßt' + model.userName)
 							]));
 				} else {
 					return A2(
@@ -5310,7 +5301,7 @@ var $author$project$Home$homeView = function (model) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$elm$html$Html$text('asdasd')
+								$elm$html$Html$text('asdaasdsadasdasdadhggfhsasd')
 							]));
 				}
 			}()

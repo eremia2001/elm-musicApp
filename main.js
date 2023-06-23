@@ -5163,7 +5163,7 @@ var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		{isLoggedIn: false},
+		{isLoggedIn: false, message: 'init'},
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -5179,9 +5179,18 @@ var $author$project$Main$authenticate = _Platform_outgoingPort(
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		return _Utils_Tuple2(
-			model,
-			$author$project$Main$authenticate(_Utils_Tuple0));
+		if (msg.$ === 'Authenticate') {
+			return _Utils_Tuple2(
+				model,
+				$author$project$Main$authenticate(_Utils_Tuple0));
+		} else {
+			var name = msg.a;
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{message: name}),
+				$elm$core$Platform$Cmd$none);
+		}
 	});
 var $author$project$Main$Authenticate = {$: 'Authenticate'};
 var $elm$html$Html$button = _VirtualDom_node('button');
@@ -5219,7 +5228,7 @@ var $author$project$Main$view = function (model) {
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Login')
+						$elm$html$Html$text(model.message)
 					])),
 				model.isLoggedIn ? $elm$html$Html$text('Hallo! Du bist eingeloggt.') : $elm$html$Html$text('Bitte logge dich ein.')
 			]));

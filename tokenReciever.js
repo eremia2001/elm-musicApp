@@ -3,7 +3,7 @@ var app = Elm.Home.init({
 });
 let savedToken = null;
 //getToken();
-//getArtistData();
+//getUserData();
 getData();
 
 async function getToken() {
@@ -41,25 +41,30 @@ function getData() {
     savedToken = token;
     console.log("AKJSHD" + savedToken.access_token);
     // wird es dann aufgerufen , wenn sicher feststeht, dass token gespeichert ist.
-    getArtistData();
+    getUserData();
   });
 }
 
-async function getArtistData() {
+async function getUserData() {
   const headers = {
     Authorization: "Bearer " + savedToken.access_token,
   };
-  const response = await fetch(
-    "https://api.spotify.com/v1/artists/0TnOYISbd1XYRBk9myaseg",
-    {
-      method: "GET",
-      headers: headers,
-    }
-  )
+  const response = await fetch("https://api.spotify.com/v1/me", {
+    method: "GET",
+    headers: headers,
+  })
     .then((response) => response.json())
-    .then((data) => console.log(data));
-
+    .then((data) => {
+      console.log(data.display_name);
+      sendUsername("Max Mustermann");
+    });
   //const data = await response.json();
   //console.log(data);
   //console.log(response);
+}
+
+function sendUsername(username) {
+  // Hier kannst du den Benutzernamen an Elm senden
+  // app.ports.getUsername.send(username);
+  console.log("Hallo ochj bin hier" + app.ports);
 }
